@@ -1,0 +1,101 @@
+= Gson Log4J2 JSON Layout
+
+Log4J2 JSON link:https://logging.apache.org/log4j/2.x/manual/layouts.html[layout] generated and sanitized using link:https://github.com/google/gson[Gson]. This library has dependencies on gson and log4j-core.
+
+Import from Maven Central:
+
+.pom.xml
+[source,xml]
+----
+<dependency>
+    <groupId>com.github.mvh77</groupId>
+    <artifactId>gson-log4j2-layout</artifactId>
+    <version>1.0.0</version>
+</dependency>
+----
+
+Use it in your _log4j2.xml_ file with _<GsonJsonLayout/>_ and be sure to add _packages="com.github.mvh77.log4j2layout"_ to the configuration.
+
+.log4j2.xml
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" name="spring-boot-kafka-log"
+                             packages="com.github.mvh77.log4j2layout">
+    <Appenders>
+        <Kafka name="Kafka" topic="system.logging" key="test-app">
+            <GsonJsonLayout/>
+            <Property name="bootstrap.servers">kafka-1:9092</Property>
+        </Kafka>
+        <Async name="Async">
+            <AppenderRef ref="Kafka"/>
+        </Async>
+
+        <Console name="stdout" target="SYSTEM_OUT">
+            <GsonJsonLayout pretty="true"/>
+        </Console>
+
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Kafka"/>
+            <AppenderRef ref="stdout"/>
+        </Root>
+        <!-- MUST BE INFO OR GREATER TO PREVENT RECURSIVE LOGGING -->
+        <Logger name="org.apache.kafka" level="WARN" />
+    </Loggers>
+</Configuration>
+----
+
+.Layout Configuration
+|===
+|Attribute|Default|Description
+
+|charset|UTF-8|Charset to use (probably always UTF-8)
+
+|pretty|false|Pretty printed JSON
+
+|max-stack-size|20|Maximum number of nested exceptions
+|===
+
+Example JSON that has an exception with a root cause. Implemented with link:https://www.elastic.co/[Elastic Stack] in mind (@timestamp).
+
+.Example log
+[source,json]
+----
+{
+  "@timestamp": "2018-12-07T11:15:33.350Z",
+  "thread": "main",
+  "level": "WARN",
+  "logger": "hello.Application",
+  "message": "here\u0027s an exception",
+  "stacktrace": [
+    {
+      "exception": "java.lang.RuntimeException",
+      "message": "test",
+      "frames": [
+        "at hello.Application.run(Application.java:31)",
+        "at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:813)",
+        "at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:797)",
+        "at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)",
+        "at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)",
+        "at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)",
+        "at hello.Application.main(Application.java:24)"
+      ]
+    },
+    {
+      "caused by": "java.lang.IllegalStateException",
+      "message": "root cause",
+      "frames": [
+        "at hello.Application.run(Application.java:31)",
+        "at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:813)",
+        "at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:797)",
+        "at org.springframework.boot.SpringApplication.run(SpringApplication.java:324)",
+        "at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)",
+        "at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)",
+        "at hello.Application.main(Application.java:24)"
+      ]
+    }
+  ]
+}
+----
