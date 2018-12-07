@@ -6,8 +6,9 @@
     <artifactId>gson-log4j2-layout</artifactId>
     <version>1.0.0</version>
 
+    <name>Gson Log4J2 JSON Layout</name>
     <description>
-        Gson Log4J2 JSON Layout
+        Log4J2 JSON Layout using Google Gson
     </description>
     <url>http://github.com/mvh77/gson-log4j2-layout</url>
     <licenses>
@@ -27,8 +28,8 @@
         <connection>scm:git:git://github.com/mvh77/gson-log4j2-layout.git</connection>
         <developerConnection>scm:git:git@github.com:mvh77/gson-log4j2-layout.git</developerConnection>
         <url>http://github.com/mvh77/gson-log4j2-layout</url>
-      <tag>gson-log4j2-layout-1.0.0</tag>
-  </scm>
+        <tag>1.0.0</tag>
+    </scm>
 
     <distributionManagement>
         <snapshotRepository>
@@ -102,17 +103,6 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                        <version>2.5.3</version>
-                        <configuration>
-                            <autoVersionSubmodules>true</autoVersionSubmodules>
-                            <useReleaseProfile>false</useReleaseProfile>
-                            <releaseProfiles>release</releaseProfiles>
-                            <goals>deploy</goals>
-                        </configuration>
-                    </plugin>
-                    <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
                         <version>1.6.7</version>
@@ -120,7 +110,7 @@
                         <configuration>
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
                     <plugin>
