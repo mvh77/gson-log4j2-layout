@@ -10,7 +10,7 @@ Import from Maven Central:
 <dependency>
     <groupId>com.github.mvh77</groupId>
     <artifactId>gson-log4j2-layout</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ----
 
@@ -55,7 +55,11 @@ Use it in your _log4j2.xml_ file with _<GsonJsonLayout/>_ and be sure to add _pa
 
 |pretty|false|Pretty printed JSON
 
+|json-stacktrace|false|Format stack traces as JSON
+
 |max-stack-size|20|Maximum number of nested exceptions
+
+|logger-pattern|none|The conversion pattern for the name of the logger value, for example '1.' would rename the logger from _org.apache.commons.Foo_ to _o.a.c.Foo_. See _Patterns_ in link:https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout[PatternLayout].
 |===
 
 Example JSON that has an exception with a root cause. Implemented with link:https://www.elastic.co/[Elastic Stack] in mind (@timestamp).
@@ -69,7 +73,7 @@ Example JSON that has an exception with a root cause. Implemented with link:http
   "level": "WARN",
   "logger": "hello.Application",
   "message": "here\u0027s an exception",
-  "stacktrace": [
+  "stack-trace": [
     {
       "exception": "java.lang.RuntimeException",
       "message": "test",
